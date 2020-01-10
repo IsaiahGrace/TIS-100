@@ -15,33 +15,46 @@ module node
    );
 
    // Main signals
-   pc_t pc;
+   pc_t   pc;
    word_t acc;
-   i_t instr;
-   src_t src, dst;
+   word_t new_acc;
+   i_t    instr;
+   src_t  src, dst;
       
    // ACC related
-   logic       acc_ovwrt;
-   logic       acc_sav;
-   logic       acc_swp;
+   logic  acc_ovwrt;
+   logic  acc_sav;
+   logic  acc_swp;
 
    // ALU related
    aluop_t aluop;
-   word_t alu_operand_a, alu_operand_b, alu_result;
+   word_t  alu_operand_a, alu_operand_b, alu_result;
 
    // IROM related
 
+   // PC related
+   pc_t   jump_pc;
+   logic  jump_pc_en;
+   logic  pc_stall;
+
+   // NODEIO related
+   word_t out_data, in_data;
+   direction_t direction;
+   logic  tx, rx, tx_complete, rx_complete;
+   
+   
    // Assigns
-   // NOTE: 
+   // NOTE:
    // bit 3 is unused, 
    // this is so HEX representations of the instructions will be easier to read
    assign src = instr.imm[2:0];
    assign dst = instr.imm[6:4]; 
+
    
    // Submodules
    acc ACC (.CLK(CLK),
 	    .nRST(nRST),
-	    .new_acc(), // word_t
+	    .new_acc(new_acc), // word_t
 	    .wen(acc_ovwrt),
 	    .sav(acc_sav),
 	    .swp(acc_swp),
@@ -65,22 +78,22 @@ module node
    
    pc PC (.CLK(CLK),
 	  .nRST(nRST),
-	  .jump_pc(), // pc_t
-	  .jump_pc_en(),
-	  .halt(),
-	  .stall()
+	  .jump_pc(jump_pc), // pc_t
+	  .jump_pc_en(jump_pc_en),
+	  .halt(halt),
+	  .stall(pc_stall)
 	  .pc(pc) // pc_t
 	  );
    
    nodeio NODEIO (.CLK(CLK),
 		  .nRST(nRST),
-		  .out_data(), // word_t
-		  .in_data(), // word_t
-		  .direction(), // direction_t
-		  .tx(),
-		  .rx(),
-		  .tx_complete(),
-		  .rx_complete(),
+		  .out_data(out_data), // word_t
+		  .in_data(in_data), // word_t
+		  .direction(direction), // direction_t
+		  .tx(tx),
+		  .rx(rx),
+		  .tx_complete(tx_complete),
+		  .rx_complete(rx_complete),
 		  .up(up),
 		  .down(down),
 		  .left(left),
