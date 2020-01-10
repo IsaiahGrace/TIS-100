@@ -23,11 +23,14 @@ package types_pkg;
       logic [10:0] imm;
    } i_t;
 
-   typedef enum logic [1:0] {
+   typedef enum logic [2:0] {
 			     XOR,
 			     ADD,
 			     SUB,
-			     NEG
+			     NEG,
+			     OR,
+			     AND,
+			     SFT
 			     } aluop_t;
 
    typedef enum logic [2:0] {
