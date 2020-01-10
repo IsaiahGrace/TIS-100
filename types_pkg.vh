@@ -31,12 +31,12 @@ package types_pkg;
 			     } aluop_t;
 
    typedef enum logic [2:0] {
-			     UP,
-			     DOWN,
-			     LEFT,
-			     RIGHT,
-			     ANY,
-			     LAST
+			     UP    = 3'b000,
+			     DOWN  = 3'b001,
+			     LEFT  = 3'b010,
+			     RIGHT = 3'b011,
+			     ANY   = 3'b100,
+			     LAST  = 3'b101
 			     } direction_t;
    
    
